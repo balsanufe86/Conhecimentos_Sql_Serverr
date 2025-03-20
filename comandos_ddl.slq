@@ -1,0 +1,29 @@
+USE LocadoraCarros;
+GO
+
+-- 1. Adicionar nova coluna na tabela de Clientes (DataNascimento)
+ALTER TABLE Clientes
+ADD DataNascimento DATE;
+
+-- 2. Adicionar coluna na tabela de Carros para registrar quilometragem
+ALTER TABLE Carros
+ADD QuilometragemAtual INT;
+
+-- 3. Alterar tipo de dado da coluna "Email" da tabela Vendedores (de VARCHAR(100) para VARCHAR(150))
+ALTER TABLE Vendedores
+ALTER COLUMN Email VARCHAR(150);
+
+-- 4. Renomear coluna "Custo" da tabela Manutencao para "ValorCusto"
+EXEC sp_rename 'Manutencao.Custo', 'ValorCusto', 'COLUMN';
+
+-- 5. Adicionar nova coluna "StatusLocacao" na tabela Locacoes
+ALTER TABLE Locacoes
+ADD StatusLocacao VARCHAR(20) DEFAULT 'Em andamento';
+
+-- 6. Criar uma nova constraint (restrição) de valor mínimo na coluna ValorTotal da tabela Locacoes
+ALTER TABLE Locacoes
+ADD CONSTRAINT CHK_ValorTotal_Min CHECK (ValorTotal >= 0);
+
+-- 7. Excluir a coluna "StatusLocacao" (exemplo de reversão ou reestruturação)
+ALTER TABLE Locacoes
+DROP COLUMN StatusLocacao;
