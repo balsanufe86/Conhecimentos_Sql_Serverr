@@ -1,2 +1,3 @@
-# Conhecimentos_Sql_Serverr
-Conhecimentos que adquiri em cursos e pesquisas
+# Conhecimentos_Sql_Server
+
+Conhecimentos que adquiri em cursos e pesquisas, para fins de demostração, estudos e consultas.
