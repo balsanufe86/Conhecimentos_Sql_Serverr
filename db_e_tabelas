@@ -1,0 +1,121 @@
+-- Criar banco de dados
+CREATE DATABASE LocadoraCarros;
+GO
+
+-- Usar banco criado
+USE LocadoraCarros;
+GO
+
+-- Tabela de Regiões
+CREATE TABLE Regioes (
+    RegiaoID INT PRIMARY KEY IDENTITY(1,1),
+    Nome VARCHAR(100)
+);
+GO
+
+-- Tabela de Vendedores
+CREATE TABLE Vendedores (
+    VendedorID INT PRIMARY KEY IDENTITY(1,1),
+    Nome VARCHAR(100),
+    Email VARCHAR(100),
+    RegiaoID INT,
+    FOREIGN KEY (RegiaoID) REFERENCES Regioes(RegiaoID)
+);
+GO
+
+-- Tabela de Clientes
+CREATE TABLE Clientes (
+    ClienteID INT PRIMARY KEY IDENTITY(1,1),
+    Nome VARCHAR(100),
+    CPF CHAR(11),
+    Email VARCHAR(100),
+    Telefone VARCHAR(20),
+    DataCadastro DATE DEFAULT GETDATE()
+);
+GO
+
+-- Tabela de Categorias de Carros
+CREATE TABLE CategoriasCarros (
+    CategoriaID INT PRIMARY KEY IDENTITY(1,1),
+    Descricao VARCHAR(50)
+);
+GO
+
+-- Tabela de Modelos
+CREATE TABLE Modelos (
+    ModeloID INT PRIMARY KEY IDENTITY(1,1),
+    NomeModelo VARCHAR(50),
+    CategoriaID INT,
+    FOREIGN KEY (CategoriaID) REFERENCES CategoriasCarros(CategoriaID)
+);
+GO
+
+-- Tabela de Carros
+CREATE TABLE Carros (
+    CarroID INT PRIMARY KEY IDENTITY(1,1),
+    Placa VARCHAR(10),
+    ModeloID INT,
+    AnoFabricacao INT,
+    Cor VARCHAR(30),
+    Disponivel BIT,
+    FOREIGN KEY (ModeloID) REFERENCES Modelos(ModeloID)
+);
+GO
+
+-- Tabela de Locações
+CREATE TABLE Locacoes (
+    LocacaoID INT PRIMARY KEY IDENTITY(1,1),
+    ClienteID INT,
+    CarroID INT,
+    VendedorID INT,
+    DataRetirada DATE,
+    DataDevolucaoPrevista DATE,
+    DataDevolucaoReal DATE NULL,
+    ValorTotal DECIMAL(10,2),
+    FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
+    FOREIGN KEY (CarroID) REFERENCES Carros(CarroID),
+    FOREIGN KEY (VendedorID) REFERENCES Vendedores(VendedorID)
+);
+GO
+
+-- Tabela de Pagamentos
+CREATE TABLE Pagamentos (
+    PagamentoID INT PRIMARY KEY IDENTITY(1,1),
+    LocacaoID INT,
+    FormaPagamento VARCHAR(50),
+    ValorPago DECIMAL(10,2),
+    DataPagamento DATE,
+    FOREIGN KEY (LocacaoID) REFERENCES Locacoes(LocacaoID)
+);
+GO
+
+-- Tabela de Faturamento
+CREATE TABLE Faturamento (
+    FaturamentoID INT PRIMARY KEY IDENTITY(1,1),
+    VendedorID INT,
+    Mes INT,
+    Ano INT,
+    TotalVendas DECIMAL(10,2),
+    FOREIGN KEY (VendedorID) REFERENCES Vendedores(VendedorID)
+);
+GO
+
+-- Tabela de Custos
+CREATE TABLE Custos (
+    CustoID INT PRIMARY KEY IDENTITY(1,1),
+    Descricao VARCHAR(100),
+    Valor DECIMAL(10,2),
+    DataCusto DATE
+);
+GO
+
+-- Tabela de Manutenção
+CREATE TABLE Manutencao (
+    ManutencaoID INT PRIMARY KEY IDENTITY(1,1),
+    CarroID INT,
+    Descricao VARCHAR(100),
+    Custo DECIMAL(10,2),
+    DataManutencao DATE,
+    FOREIGN KEY (CarroID) REFERENCES Carros(CarroID)
+);
+GO
